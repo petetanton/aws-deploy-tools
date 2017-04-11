@@ -56,7 +56,10 @@ public class WorkerProvisioner {
         launchSpecification.setSubnetId("subnet-5aaecf03");
 
 
-        launchSpecification.setIamInstanceProfile(new IamInstanceProfileSpecification().withArn("arn:aws:iam::977503918776:role/deployment-role"));
+        launchSpecification.setIamInstanceProfile(new IamInstanceProfileSpecification()
+                .withName("deployment-tools-DeploymentInstanceProfile-6VUJFOYO7VDE")
+//                .withArn("arn:aws:iam::977503918776:role/deployment-role")
+        );
         request.setLaunchSpecification(launchSpecification);
 
         request.setSpotPrice("0.015");
