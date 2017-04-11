@@ -8,6 +8,7 @@ import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsRequest;
 import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsResult;
 import com.amazonaws.services.ec2.model.EbsBlockDevice;
 import com.amazonaws.services.ec2.model.GroupIdentifier;
+import com.amazonaws.services.ec2.model.IamInstanceProfileSpecification;
 import com.amazonaws.services.ec2.model.InstanceType;
 import com.amazonaws.services.ec2.model.LaunchSpecification;
 import com.amazonaws.services.ec2.model.RequestSpotInstancesRequest;
@@ -55,6 +56,7 @@ public class WorkerProvisioner {
         launchSpecification.setSubnetId("subnet-5aaecf03");
 
 
+        launchSpecification.setIamInstanceProfile(new IamInstanceProfileSpecification().withArn("arn:aws:iam::977503918776:role/deployment-role"));
         request.setLaunchSpecification(launchSpecification);
 
         request.setSpotPrice("0.015");
