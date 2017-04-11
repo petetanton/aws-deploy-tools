@@ -1,6 +1,6 @@
 [repoprivate-pool-noarch]
 name=repoprivate-pool-noarch
-baseurl=https://tasty-tanton.s3-website-eu-west-1.amazonaws.com>
+baseurl=https://tasty-tanton.s3-website-eu-west-1.amazonaws.com
 gpgcheck=0
 priority=1
 s3_enabled=1
