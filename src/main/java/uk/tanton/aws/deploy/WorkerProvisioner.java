@@ -90,7 +90,7 @@ public class WorkerProvisioner {
             }
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(10000);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("Name", "deploy-worker"));
