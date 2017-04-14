@@ -31,7 +31,7 @@ public class WorkerProvisioner {
     private static final String CENTOS7 = "ami-7abd0209";
 
     public static void ProvisionWorker() throws InterruptedException {
-        final AmazonEC2 amazonEC2 = AmazonEC2Factory.getAmazonEC2();
+        final AmazonEC2 amazonEC2 = AmazonFactory.getAmazonEC2();
         final RequestSpotInstancesRequest request = new RequestSpotInstancesRequest();
 
         final SpotPrice cheapestInstance = new SpotPrice().withInstanceType(InstanceType.M3Medium);
@@ -57,7 +57,7 @@ public class WorkerProvisioner {
 
 
         launchSpecification.setIamInstanceProfile(new IamInstanceProfileSpecification()
-                .withName("deployment-tools-DeploymentInstanceProfile-6VUJFOYO7VDE")
+                        .withName("deployment-tools-DeploymentInstanceProfile-6VUJFOYO7VDE")
 //                .withArn("arn:aws:iam::977503918776:role/deployment-role")
         );
         request.setLaunchSpecification(launchSpecification);
