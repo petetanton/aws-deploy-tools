@@ -22,7 +22,9 @@ public class Main {
                 break;
             case "get-instances":
                 for (Instance instance : InstanceFinder.findInstances("deploy-worker")) {
-                    System.out.println(instance.getPublicIpAddress());
+                    if (instance.getPublicIpAddress() != null) {
+                        System.out.println(instance.getPublicIpAddress());
+                    }
                 }
                 break;
             case "terminate-workers":
