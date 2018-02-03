@@ -89,7 +89,7 @@ public class WorkerProvisioner {
         amazonEC2.createTags(createTagsRequest);
 
         System.out.println("all instances have been started and tagged with the name: deploy-worker");
-        waitForInstances(instanceIds, amazonEC2);
+//        waitForInstances(instanceIds, amazonEC2);
         System.out.println("finished");
 
     }

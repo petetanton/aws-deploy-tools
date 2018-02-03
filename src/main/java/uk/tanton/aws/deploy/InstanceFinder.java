@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by tantop01 on 11/04/17.
- */
 public class InstanceFinder {
 
     public static List<Instance> findInstances(String find) {
