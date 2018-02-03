@@ -1,22 +1,7 @@
 package uk.tanton.aws.deploy;
 
 import com.amazonaws.services.ec2.AmazonEC2;
-import com.amazonaws.services.ec2.model.BlockDeviceMapping;
-import com.amazonaws.services.ec2.model.CancelSpotInstanceRequestsRequest;
-import com.amazonaws.services.ec2.model.CreateTagsRequest;
-import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsRequest;
-import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsResult;
-import com.amazonaws.services.ec2.model.EbsBlockDevice;
-import com.amazonaws.services.ec2.model.GroupIdentifier;
-import com.amazonaws.services.ec2.model.IamInstanceProfileSpecification;
-import com.amazonaws.services.ec2.model.InstanceType;
-import com.amazonaws.services.ec2.model.LaunchSpecification;
-import com.amazonaws.services.ec2.model.RequestSpotInstancesRequest;
-import com.amazonaws.services.ec2.model.RequestSpotInstancesResult;
-import com.amazonaws.services.ec2.model.SpotInstanceRequest;
-import com.amazonaws.services.ec2.model.SpotPrice;
-import com.amazonaws.services.ec2.model.Tag;
-import com.amazonaws.services.ec2.model.VolumeType;
+import com.amazonaws.services.ec2.model.*;
 import com.amazonaws.util.StringUtils;
 import org.joda.time.DateTime;
 
@@ -45,7 +30,12 @@ public class WorkerProvisioner {
         Collection<BlockDeviceMapping> blockDeviceMappings = new ArrayList<>();
         final BlockDeviceMapping blockDeviceMapping = new BlockDeviceMapping();
         blockDeviceMapping.setDeviceName("/dev/sda1");
-        blockDeviceMapping.setEbs(new EbsBlockDevice().withDeleteOnTermination(true).withEncrypted(false).withVolumeSize(8).withVolumeType(VolumeType.Gp2));
+        blockDeviceMapping.setEbs(new EbsBlockDevice()
+                .withDeleteOnTermination(true)
+//                .withEncrypted(false)
+                .withVolumeSize(8)
+                .withVolumeType(VolumeType.Gp2)
+        );
         blockDeviceMappings.add(blockDeviceMapping);
         launchSpecification.setBlockDeviceMappings(blockDeviceMappings);
 //        launchSpecification.setEbsOptimized();
@@ -99,8 +89,26 @@ public class WorkerProvisioner {
         amazonEC2.createTags(createTagsRequest);
 
         System.out.println("all instances have been started and tagged with the name: deploy-worker");
+        waitForInstances(instanceIds, amazonEC2);
         System.out.println("finished");
 
+    }
+
+    private static void waitForInstances(List<String> instanceIds, AmazonEC2 amazonEC2) throws InterruptedException {
+        boolean done = true;
+        DescribeInstanceStatusResult instanceStatus = amazonEC2.describeInstanceStatus(new DescribeInstanceStatusRequest().withInstanceIds(instanceIds));
+
+        for (InstanceStatus status : instanceStatus.getInstanceStatuses()) {
+            System.out.println(status.getInstanceState());
+            if (!status.getInstanceState().equals(InstanceStateName.Running)) {
+                done = false;
+            }
+        }
+
+        if (!done) {
+            Thread.sleep(10000L);
+            waitForInstances(instanceIds, amazonEC2);
+        }
     }
 
     private static boolean isSpotInstanceRequestReady(Collection<String> spotInstanceRequestIds, AmazonEC2 amazonEC2) {

@@ -10,10 +10,10 @@ import java.util.Date;
 @DynamoDBTable(tableName = "deployment-tools-Deployments-1S0H7I96WGN9M")
 public class Deployments {
 
-    @DynamoDBHashKey
+    @DynamoDBHashKey(attributeName = "Component")
     private String component;
 
-    @DynamoDBRangeKey
+    @DynamoDBRangeKey(attributeName = "Version")
     private int version;
 
     private String status;
